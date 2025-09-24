@@ -6,6 +6,8 @@ import com.senai.conta_bancaria_turma2.domain.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
@@ -31,5 +33,11 @@ public class ClienteService {
 
 
         return ClienteResponseDTO.fromEntity(repository.save(cliente));
+    }
+
+    public List<ClienteResponseDTO> listarClientesAtivos() {
+        return repository.findAllByAtivoTrue().stream()
+                .map(ClienteResponseDTO::fromEntity)
+                .toList();
     }
 }

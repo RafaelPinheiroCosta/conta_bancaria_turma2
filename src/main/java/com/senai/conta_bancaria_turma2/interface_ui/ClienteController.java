@@ -6,12 +6,10 @@ import com.senai.conta_bancaria_turma2.application.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -27,5 +25,10 @@ public class ClienteController {
         return ResponseEntity.created(
                 URI.create("/api/cliente/cpf/"+novoCliente.cpf())
         ).body(novoCliente);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClienteResponseDTO>> listarClientesAtivos() {
+        return ResponseEntity.ok(service.listarClientesAtivos());
     }
 }
