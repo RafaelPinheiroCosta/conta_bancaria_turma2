@@ -31,4 +31,20 @@ public class ClienteController {
     public ResponseEntity<List<ClienteResponseDTO>> listarClientesAtivos() {
         return ResponseEntity.ok(service.listarClientesAtivos());
     }
+
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<ClienteResponseDTO> buscarClienteAtivoPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(service.buscarClienteAtivoPorCpf(cpf));
+    }
+
+    @PutMapping("/cpf/{cpf}")
+    public ResponseEntity<ClienteResponseDTO> atualizarCliente(@PathVariable String cpf,
+                                                               @RequestBody ClienteRegistroDTO dto) {
+        return ResponseEntity.ok(service.atualizarCliente(cpf, dto));
+    }
+    @DeleteMapping("/cpf/{cpf}")
+    public ResponseEntity<Void> deletarCliente(@PathVariable String cpf) {
+        service.deletarCliente(cpf);
+        return ResponseEntity.noContent().build();
+    }
 }
