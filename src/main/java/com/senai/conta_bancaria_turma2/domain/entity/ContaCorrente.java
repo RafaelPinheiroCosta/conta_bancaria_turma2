@@ -16,11 +16,12 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @SuperBuilder
-public class ContaCorrente extends Conta{
-    @Column(precision=19, scale=2)
-    private BigDecimal limite;
-    @Column(precision=19, scale=4)
-    private BigDecimal taxa;
+public class ContaCorrente extends Conta {
+    @Column(precision = 19)
+    private BigDecimal limite = new BigDecimal("500.00");
+
+    @Column(precision = 19)
+    private BigDecimal taxa = new BigDecimal("0.05");
 
     @Override
     public String getTipo() {
@@ -29,9 +30,7 @@ public class ContaCorrente extends Conta{
 
     @Override
     public void sacar(BigDecimal valor) {
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O valor de saque deve ser maior que zero.");
-        }
+        validarValorMaiorQueZero(valor);
 
         BigDecimal custoSaque = valor.multiply(taxa);
         BigDecimal totalSaque = valor.add(custoSaque);

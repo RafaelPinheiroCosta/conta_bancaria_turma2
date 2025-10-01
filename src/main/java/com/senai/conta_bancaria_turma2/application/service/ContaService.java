@@ -2,6 +2,8 @@ package com.senai.conta_bancaria_turma2.application.service;
 
 import com.senai.conta_bancaria_turma2.application.dto.ContaAtualizacaoDTO;
 import com.senai.conta_bancaria_turma2.application.dto.ContaResumoDTO;
+import com.senai.conta_bancaria_turma2.application.dto.TransferenciaDTO;
+import com.senai.conta_bancaria_turma2.application.dto.ValorSaqueDepositoDTO;
 import com.senai.conta_bancaria_turma2.domain.entity.Conta;
 import com.senai.conta_bancaria_turma2.domain.entity.ContaCorrente;
 import com.senai.conta_bancaria_turma2.domain.entity.ContaPoupanca;
@@ -56,9 +58,25 @@ public class ContaService {
         );
     }
 
-    public ContaResumoDTO sacar(String numeroConta, BigDecimal valor) {
+    public ContaResumoDTO sacar(String numeroConta, ValorSaqueDepositoDTO dto) {
         var conta = buscaContaAtivaPorNumero(numeroConta);
-        conta.sacar(valor);
+        conta.sacar(dto.valor());
         return ContaResumoDTO.fromEntity(repository.save(conta));
+    }
+    public ContaResumoDTO depositar(String numeroConta, ValorSaqueDepositoDTO dto) {
+        var conta = buscaContaAtivaPorNumero(numeroConta);
+        conta.depositar(dto.valor());
+        return ContaResumoDTO.fromEntity(repository.save(conta));
+    }
+
+    public ContaResumoDTO transferir(String numeroConta, TransferenciaDTO dto) {
+        var contaOrigem = buscaContaAtivaPorNumero(numeroConta);
+        var contaDestino = buscaContaAtivaPorNumero(dto.contaDestino());
+
+        contaOrigem.sacar(dto.valor());
+        contaDestino.depositar(dto.valor());
+
+        repository.save(contaDestino);
+        return ContaResumoDTO.fromEntity(repository.save(contaOrigem));
     }
 }

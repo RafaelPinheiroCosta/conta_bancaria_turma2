@@ -27,7 +27,7 @@ public abstract class Conta {
     @Column(nullable = false, length = 20)
     private String numero;
 
-    @Column(nullable = false, precision = 20, scale = 2)
+    @Column(nullable = false, precision = 20)
     private BigDecimal saldo;
 
     @Column(nullable = false)
@@ -40,12 +40,19 @@ public abstract class Conta {
     public abstract String getTipo();
 
     public void sacar(BigDecimal valor) {
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O valor de saque deve ser maior que zero.");
-        }
+        validarValorMaiorQueZero(valor);
         if (this.saldo.compareTo(valor) < 0) {
             throw new IllegalArgumentException("Saldo insuficiente para o saque.");
         }
         this.saldo = this.saldo.subtract(valor);
+    }
+    public void depositar(BigDecimal valor) {
+      validarValorMaiorQueZero(valor);
+        this.saldo = this.saldo.add(valor);
+    }
+    protected static void validarValorMaiorQueZero(BigDecimal valor) {
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("O valor da operação deve ser maior que zero.");
+        }
     }
 }
