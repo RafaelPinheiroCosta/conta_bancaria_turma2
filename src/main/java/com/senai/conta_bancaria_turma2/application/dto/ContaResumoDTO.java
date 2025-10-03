@@ -4,6 +4,7 @@ import com.senai.conta_bancaria_turma2.domain.entity.Cliente;
 import com.senai.conta_bancaria_turma2.domain.entity.Conta;
 import com.senai.conta_bancaria_turma2.domain.entity.ContaCorrente;
 import com.senai.conta_bancaria_turma2.domain.entity.ContaPoupanca;
+import com.senai.conta_bancaria_turma2.domain.exceptions.TipoDeContaInvalidaException;
 
 import java.math.BigDecimal;
 
@@ -31,7 +32,7 @@ public record ContaResumoDTO(
                     .cliente(cliente)
                     .build();
         }
-        return null;
+        throw  new TipoDeContaInvalidaException();
     }
     public static ContaResumoDTO fromEntity(Conta c) {
         return new ContaResumoDTO(

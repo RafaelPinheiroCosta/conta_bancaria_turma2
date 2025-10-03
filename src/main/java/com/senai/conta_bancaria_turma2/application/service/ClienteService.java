@@ -2,6 +2,7 @@ package com.senai.conta_bancaria_turma2.application.service;
 
 import com.senai.conta_bancaria_turma2.application.dto.ClienteRegistroDTO;
 import com.senai.conta_bancaria_turma2.application.dto.ClienteResponseDTO;
+import com.senai.conta_bancaria_turma2.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria_turma2.domain.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,14 +44,14 @@ public class ClienteService {
 
     public ClienteResponseDTO buscarClienteAtivoPorCpf(String cpf) {
         var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new RuntimeException("Cliente não encontrado.")
+                () -> new EntidadeNaoEncontradaException("Cliente")
         );
         return ClienteResponseDTO.fromEntity(cliente);
     }
 
     public ClienteResponseDTO atualizarCliente(String cpf, ClienteRegistroDTO dto) {
         var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new RuntimeException("Cliente não encontrado.")
+                () -> new EntidadeNaoEncontradaException("Cliente")
         );
 
         cliente.setNome(dto.nome());
@@ -61,7 +62,7 @@ public class ClienteService {
 
     public void deletarCliente(String cpf) {
         var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new RuntimeException("Cliente não encontrado.")
+                () -> new EntidadeNaoEncontradaException("Cliente")
         );
         cliente.setAtivo(false);
         cliente.getContas().forEach(
