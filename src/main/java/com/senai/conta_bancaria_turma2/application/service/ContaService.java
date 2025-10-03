@@ -73,10 +73,18 @@ public class ContaService {
         var contaOrigem = buscaContaAtivaPorNumero(numeroConta);
         var contaDestino = buscaContaAtivaPorNumero(dto.contaDestino());
 
-        contaOrigem.sacar(dto.valor());
-        contaDestino.depositar(dto.valor());
+        contaOrigem.transferir(dto.valor(), contaDestino);
 
         repository.save(contaDestino);
         return ContaResumoDTO.fromEntity(repository.save(contaOrigem));
+    }
+
+    public ContaResumoDTO aplicarRendimento(String numeroDaConta) {
+        var conta = buscaContaAtivaPorNumero(numeroDaConta);
+        if(conta instanceof ContaPoupanca poupanca){
+            poupanca.aplicarRendimento();
+            return ContaResumoDTO.fromEntity(repository.save(conta));
+        }
+        throw new IllegalArgumentException("Rendimento apenas para conta poupança");
     }
 }

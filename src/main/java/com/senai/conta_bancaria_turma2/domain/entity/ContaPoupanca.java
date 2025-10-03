@@ -26,4 +26,10 @@ public class ContaPoupanca extends Conta{
     public String getTipo() {
         return "POUPANCA";
     }
+
+
+    public void aplicarRendimento() {
+        var ganho = getSaldo().multiply(rendimento);
+        setSaldo(getSaldo().add(ganho));
+    }
 }
