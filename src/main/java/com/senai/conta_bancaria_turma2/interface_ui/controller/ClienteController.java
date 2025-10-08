@@ -1,10 +1,9 @@
-package com.senai.conta_bancaria_turma2.interface_ui;
+package com.senai.conta_bancaria_turma2.interface_ui.controller;
 
 import com.senai.conta_bancaria_turma2.application.dto.ClienteRegistroDTO;
 import com.senai.conta_bancaria_turma2.application.dto.ClienteResponseDTO;
 import com.senai.conta_bancaria_turma2.application.service.ClienteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
